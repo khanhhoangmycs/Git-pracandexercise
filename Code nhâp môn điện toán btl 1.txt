@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    int dinoCount;
+    int dangerLevel;
+    double temperature;
+    char terrainType;
+    double distance;
+    int vehicleEnergy;
+    int roadBlocked;
+    int lavaNearby;
+    int rexAvailable;
+    int marshallReady;
+    int rescueEquipment;
+    int specialRescueReady;
+    string mainPup; 
+
+    cin >> dinoCount;
+    cin >> dangerLevel;
+    cin >> temperature;
+    cin >> terrainType;
+    cin >> distance;
+    cin >> vehicleEnergy;
+    cin >> roadBlocked;
+    cin >> lavaNearby;
+    cin >> rexAvailable;
+    cin >> marshallReady;
+    cin >> rescueEquipment;
+    cin >> specialRescueReady;
+
+    double emergencyScore = dinoCount * 3 + dangerLevel * 5 + temperature * 0.2 + distance * 2;
+
+    if (emergencyScore >= 80) {
+        cout << "[Scene 1] Emergency: CRITICAL (score = " << fixed << setprecision(1) << emergencyScore << ")" << endl;
+    } else if (emergencyScore >= 60) {
+        cout << "[Scene 1] Emergency: HIGH (score = " << fixed << setprecision(1) << emergencyScore << ")" << endl;
+    } else if (emergencyScore >= 40) {
+        cout << "[Scene 1] Emergency: MEDIUM (score = " << fixed << setprecision(1) << emergencyScore << ")" << endl;
+    } else {
+        cout << "[Scene 1] Emergency: LOW (score = " << fixed << setprecision(1) << emergencyScore << ")" << endl;
+    }
+    
+switch (terrainType) {
+    case 'F':
+        mainPup = "Chase";
+        break;
+    case 'M':
+        mainPup = "Rubble";
+        break;
+    case 'V':
+        if (marshallReady == 1) {
+            mainPup = "Marshall";
+        } else if (marshallReady == 0 ) {
+            mainPup = "Skye";
+        }
+        break;
+    case 'W':
+        mainPup = "Zuma";
+        break;
+}
+cout << "[Scene 2] Main Pup: " << mainPup << endl;
+
+if (lavaNearby == 1 && marshallReady == 1 && mainPup != "Marshall" && dinoCount >= 10 && rexAvailable == 1 && mainPup != "Rex") {
+    cout << "Support: Marshall" << endl;
+    cout << "Support: Rex"<< endl;
+} else if (lavaNearby == 1 && marshallReady == 1 && mainPup != "Marshall") {
+    cout << "Support: Marshall" << endl;
+} else if (dinoCount >= 10 && rexAvailable == 1 && mainPup != "Rex") {
+    cout << "Support: Rex" << endl;
+}
+double rescuePower = vehicleEnergy * 0.4 + rescueEquipment * 0.4;
+
+if (rexAvailable == 1 && dinoCount >= 10) {
+        rescuePower = rescuePower + 10;
+    }
+if (marshallReady == 1 && lavaNearby == 1) {
+        rescuePower = rescuePower + 10;
+    }
+if (roadBlocked == 1) {
+        rescuePower = rescuePower - 15;
+    }
+if (terrainType == 'M') {
+        rescuePower = rescuePower - 5;
+    }
+if (terrainType == 'V') {
+        rescuePower = rescuePower - 10;
+    }
+    
+if (rescuePower >= 70) {
+        cout << "[Scene 3] Rescue Power: " << fixed << setprecision(1) << rescuePower << " - STRONG" << endl;
+    } else if (rescuePower >= 50 && rescuePower <70) {
+        cout << "[Scene 3] Rescue Power: " << fixed << setprecision(1) << rescuePower << " - READY" << endl;
+    } else if (rescuePower >= 30 && rescuePower <50) {
+        cout << "[Scene 3] Rescue Power: " << fixed << setprecision(1) << rescuePower << " - RISKY" << endl;
+    } else {
+        cout << "[Scene 3] Rescue Power: " << fixed << setprecision(1) << rescuePower << " - NOT READY" << endl;
+    }    
+
+if (emergencyScore >= 80 && rescuePower < 30) {
+        cout << "[Scene 4] Result: MISSION FAILED - AREA TOO DANGEROUS" << endl;
+    } else if (rescuePower >= 70 && emergencyScore < 80) {
+        cout << "[Scene 4] Result: PERFECT RESCUE" << endl;
+    } else if (rescuePower >= 50) {
+        cout << "[Scene 4] Result: RESCUE SUCCESS" << endl;
+    } else if (rescuePower >= 30 && rescuePower < 50 && specialRescueReady == 1) {
+        cout << "[Scene 4] Result: SPECIAL RESCUE PLAN ACTIVATED" << endl;
+    } else {
+        cout << "[Scene 4] Result: RETREAT AND REGROUP" << endl;
+    }
+
+    return 0;
+
+}
